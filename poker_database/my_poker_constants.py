@@ -3,37 +3,178 @@ if __name__ == '__main__':
 
 suits = ['h','d','s','c']
 ranks = ['2','3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
-hands_by_value
+
+ranks_as_integers = {'2': 2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, 'T':10, 'J':11, 'Q':12, 'K':13, 'A':14}
+hands_by_value = []
+high_card_by_value = []
 pairs_by_value = []
+two_pairs_by_value = []
+trips_by_value = []
+straights_by_value = []
+flushes_by_value = []
+full_Hise_by_value = []
+fours_by_value = []
 #hand = list
 # pdb.set_trace()
 # print(ranks.pop(0))
 # print(ranks)
 # pdb.set_trace()
 
-for rank in ranks:
+
+
+hand = ['0','0','0','0','0']
+
+ranks_popped = ranks.copy()
+
+def return_hand_as_integers(cards_as_string):
+    temphand = []
+    handlength = len(cards_as_string)
+    for i in range(handlength):
+        temphand.append(ranks_as_integers.get(cards_as_string[i]))
+    temphand.sort()
+    # if temphand == [2,3,4,5,14]:   THESE TWO LINEA WORKED
+    #     temphand = [1,2,3,4,5]
+    if 2 in temphand and 3 in temphand and 4 in temphand and 5 in temphand and 14 in temphand:
+        temphand.pop()
+        temphand.append(1)
+        temphand.sort()
+    return temphand
+
+def return_hand_as_string (cards_as_intlist, sort_low_to_high = False, sort_high_to_low = False):
+    if sort_low_to_high or sort_high_to_low:
+        cards_as_intlist.sort()
+        if [2, 3, 4, 5] in cards_as_intlist and 14 in cards_as_intlist:
+            cards_as_intlist.pop()
+            cards_as_intlist.append(1)
+            cards_as_intlist.sort()
+        if sort_high_to_low:
+            cards_as_intlist.reverse()
+    temphand = []
+    handlength = len(cards_as_intlist)
+    for i in range(handlength):
+        pdb.set_trace()
+        cardrank = cards_as_intlist[i]
+        if 1 < int(cardrank) < 10:
+            temphand.append(str(cardrank))
+        elif cardrank == 1 or cardrank == 14:
+            temphand.append('A')
+        elif cardrank == 10:
+            temphand.append('T')
+        elif cardrank == 11:
+            temphand.append('J')
+        elif cardrank == 12:
+            temphand.append('Q')
+        elif cardrank == 13:
+            temphand.append('K')
+
+    # if 'A' in temphand and '2' in temphand and '3' in temphand and '4' in temphand and '5' in temphand:
+    #     temphand = [1,2,3,4,5]
+    return temphand
+
+def remove_duplicate_hands(handlist, return_as_string = True):
+    newlist =[]
+    for i in handlist:
+        newlist.append(return_hand_as_integers(i))
+    newlist.sort()
+    # newerlist = newlist.copy()
+    j=1
+    while j<len(newlist):
+        if newlist[j] == newlist[j-1]:
+            newlist.pop(j)
+        else:
+            j += 1
+    return(newlist)
+    if return_as_string:
+        return_hand_as_string(newlist)
+    else:
+        return newlist
+
+
+#High card loop:
+for card1 in ranks:
+    if card1 == 'T':
+        break
+    hand[0] = card1
+    ranks_popped.remove(card1)
+    for card2 in ranks_popped:
+        ranks_popped2=ranks_popped.copy()
+        if card2 != card1:
+            hand[1] = card2
+            ranks_popped2.remove(card2)
+            for card3 in ranks_popped2:
+                ranks_popped3 = ranks_popped2.copy()
+                if card3 != card2:
+                    hand[2] = card3
+                    ranks_popped3.remove(card3)
+                    for card4 in ranks_popped3:
+                        ranks_popped4 = ranks_popped3.copy()
+                        if card4 != card3:
+                            hand[3] = card4
+                            ranks_popped4.remove(card4)
+                            for card5 in ranks_popped4:
+                                if card5 != card4:
+                                    hand[4] = card5
+                                    if ranks.index(card5) - ranks.index(card1) < 5:
+                                        continue
+                                    elif 'A' in hand and '2' in hand and '3' in hand and '4' in hand and '5' in hand:
+                                        continue
+                                    high_card_by_value.append(''.join(hand))
+# high_card_by_value.remove("2345A")
+
+
+# print(high_card_by_value)
+# print(len(high_card_by_value))
+
+
+newlist = remove_duplicate_hands(high_card_by_value,False)
+print(newlist)
+print(len(newlist))
+
+print(return_hand_as_integers('2345A'))
+
+# newlist = remove_duplicate_hands(newlist)
+#
+# print(newlist)
+# print(len(newlist))
+
+#Pairs loop:
+for card1 in range(len(ranks)):
     ranks_popped = ranks.copy()
-    # pdb.set_trace()
-    hand = [0,0,0,0,0]
-    # pairvalue = ranks_popped.pop(ranks.index(rank))
-    hand[0] = ranks_popped.pop(ranks.index(rank))
-    # hand.append(pairvalue) #NB - 'pop' is inplace and returns the popped value
-    # pdb.set_trace()
+    hand[0] = ranks_popped.pop(card1)
     hand[1] = hand[0]
-    # hand.append(pairvalue)
-    hand[2] = min(ranks_popped)
-    # hand.append(card3)
-    ranks_popped.remove(hand[2])
-    hand[3] = min(ranks_popped)
-    # hand.append(card4)
-    ranks_popped.remove(hand[3])
-    hand[4] = min(ranks_popped)
-    # hand.append(min(ranks_popped))
+    ranks_popped2 = ranks_popped.copy()
+    for card3 in ranks_popped:
+        hand[2] = ranks_popped2.pop(0)
+        ranks_popped3 = ranks_popped2.copy()
+        for card4 in ranks_popped2:
+            hand[3] = ranks_popped3.pop(0)
+            for card5 in ranks_popped3:
+                hand[4] = card5
+                pairs_by_value.append(''.join(hand))
 
-    pairs_by_value.append(''.join(hand))
+# print(pairs_by_value)
+# print(len(pairs_by_value))
 
-print(pairs_by_value)
+#Two_Pairs loop:
+for card1 in range(len(ranks)):
+    ranks_popped = ranks.copy()
+    hand[0] = ranks_popped.pop(card1)
+    hand[1] = hand[0]
+    ranks_popped2 = ranks_popped.copy()
+    for card3 in range(len(ranks_popped)):
+        ranks_popped2 = ranks_popped.copy()
+        hand[2] = ranks_popped2.pop(card3)
+        hand[3] = hand[2]
+        ranks_popped3 = ranks_popped2.copy()
+        for card5 in ranks_popped2:
+            hand[4] = card5
+            two_pairs_by_value.append(''.join(hand))
+                # pairs_by_value.append(''.join(hand))
 # pdb.set_trace()
+hands_by_value.append(pairs_by_value)
+
+# print(two_pairs_by_value)
+# print(len(two_pairs_by_value))
 
 pack_of_cards = ['2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'Th', 'Jh', 'Qh', 'Ah',
                  '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Ad',

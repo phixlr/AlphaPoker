@@ -4,6 +4,11 @@ if __name__ == '__main__':
 suits = ['h','d','s','c']
 ranks = ['2','3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
 
+pack_of_cards = ['2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'Th', 'Jh', 'Qh', 'Ah',
+                 '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Ad',
+                 '2c', '3c', '4c', '5c', '6c', '7c', '8c', '9c', 'Tc', 'Jc', 'Qc', 'Ac',
+                 '2s', '3s', '4s', '5s', '6s', '7s', '8s', '9s', 'Ts', 'Js', 'Qs', 'As']
+
 ranks_as_integers = {'2': 2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, 'T':10, 'J':11, 'Q':12, 'K':13, 'A':14}
 hands_by_value = []
 high_card_by_value = []
@@ -14,13 +19,7 @@ straights_by_value = []
 flushes_by_value = []
 full_Hise_by_value = []
 fours_by_value = []
-#hand = list
-# pdb.set_trace()
-# print(ranks.pop(0))
-# print(ranks)
-# pdb.set_trace()
-
-
+straight_flushes_by_value=[]
 
 hand = ['0','0','0','0','0']
 
@@ -40,10 +39,10 @@ def return_hand_as_integers(cards_as_string):
         temphand.sort()
     return temphand
 
-def return_hand_as_string (cards_as_intlist, sort_low_to_high = False, sort_high_to_low = False):
-    if sort_low_to_high or sort_high_to_low:
+def return_hand_as_string (cards_as_intlist, sort_hand = True, sort_high_to_low = False, join = True):
+    if sort_hand:
         cards_as_intlist.sort()
-        if [2, 3, 4, 5] in cards_as_intlist and 14 in cards_as_intlist:
+        if 2 in cards_as_intlist and 3 in cards_as_intlist and 4 in cards_as_intlist and 5 in cards_as_intlist and 14 in cards_as_intlist:
             cards_as_intlist.pop()
             cards_as_intlist.append(1)
             cards_as_intlist.sort()
@@ -51,44 +50,46 @@ def return_hand_as_string (cards_as_intlist, sort_low_to_high = False, sort_high
             cards_as_intlist.reverse()
     temphand = []
     handlength = len(cards_as_intlist)
+        # pdb.set_trace()
     for i in range(handlength):
-        pdb.set_trace()
-        cardrank = cards_as_intlist[i]
-        if 1 < int(cardrank) < 10:
-            temphand.append(str(cardrank))
-        elif cardrank == 1 or cardrank == 14:
+        if 1 < cards_as_intlist[i] < 10:
+            temphand.append(str(cards_as_intlist[i]))
+        elif cards_as_intlist[i] == 1 or cards_as_intlist[i] == 14:
             temphand.append('A')
-        elif cardrank == 10:
+        elif cards_as_intlist[i] == 10:
             temphand.append('T')
-        elif cardrank == 11:
+        elif cards_as_intlist[i] == 11:
             temphand.append('J')
-        elif cardrank == 12:
+        elif cards_as_intlist[i] == 12:
             temphand.append('Q')
-        elif cardrank == 13:
+        elif cards_as_intlist[i] == 13:
             temphand.append('K')
-
-    # if 'A' in temphand and '2' in temphand and '3' in temphand and '4' in temphand and '5' in temphand:
-    #     temphand = [1,2,3,4,5]
-    return temphand
+    if join:
+        return ''.join(temphand)
+    else:
+        return temphand
 
 def remove_duplicate_hands(handlist, return_as_string = True):
-    newlist =[]
+    newcardlist =[]
     for i in handlist:
-        newlist.append(return_hand_as_integers(i))
-    newlist.sort()
-    # newerlist = newlist.copy()
+        newcardlist.append(return_hand_as_integers(i))
+    newcardlist.sort()
     j=1
-    while j<len(newlist):
-        if newlist[j] == newlist[j-1]:
-            newlist.pop(j)
+    while j<len(newcardlist):
+        if newcardlist[j] == newcardlist[j-1]:
+            newcardlist.pop(j)
         else:
             j += 1
-    return(newlist)
-    if return_as_string:
-        return_hand_as_string(newlist)
-    else:
-        return newlist
 
+    if return_as_string:
+        stringslist = []
+        for s in newcardlist:
+            stringslist.append(return_hand_as_string(s))
+        return stringslist
+    else:
+        return newcardlist
+
+# print(return_hand_as_string([10,3,12,5,14]))
 
 #High card loop:
 for card1 in ranks:
@@ -119,19 +120,14 @@ for card1 in ranks:
                                     elif 'A' in hand and '2' in hand and '3' in hand and '4' in hand and '5' in hand:
                                         continue
                                     high_card_by_value.append(''.join(hand))
-# high_card_by_value.remove("2345A")
 
 
-# print(high_card_by_value)
-# print(len(high_card_by_value))
-
-
-newlist = remove_duplicate_hands(high_card_by_value,False)
+newlist = remove_duplicate_hands(high_card_by_value)
 print(newlist)
 print(len(newlist))
 
-print(return_hand_as_integers('2345A'))
-
+# print(return_hand_as_integers('2345A'))
+print(return_hand_as_string([2,11,4,5,10]))
 # newlist = remove_duplicate_hands(newlist)
 #
 # print(newlist)

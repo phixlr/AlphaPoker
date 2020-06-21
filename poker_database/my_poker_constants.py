@@ -1,6 +1,6 @@
 if __name__ == '__main__':
     import pdb
-
+import random
 suits = ['h','d','s','c']
 ranks = ['2','3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A']
 
@@ -25,6 +25,16 @@ hand = ['0','0','0','0','0']
 
 ranks_popped = ranks.copy()
 
+class Hand (object):
+    def __init__(self, players, hand_number, hole_cards=2):
+        self.deck = random.shuffle(pack_of_cards)
+        self.players = players
+        self.hand_number = hand_number
+        self.hole_cards = hole_cards
+
+    classmethod
+
+
 def return_hand_as_integers(cards_as_string):
     temphand = []
     handlength = len(cards_as_string)
@@ -33,7 +43,7 @@ def return_hand_as_integers(cards_as_string):
     temphand.sort()
     # if temphand == [2,3,4,5,14]:   THESE TWO LINEA WORKED
     #     temphand = [1,2,3,4,5]
-    if 2 in temphand and 3 in temphand and 4 in temphand and 5 in temphand and 14 in temphand:
+    if all([2 in temphand, 3 in temphand, 4 in temphand, 5 in temphand, 14 in temphand]):
         temphand.pop()
         temphand.append(1)
         temphand.sort()
@@ -42,7 +52,7 @@ def return_hand_as_integers(cards_as_string):
 def return_hand_as_string (cards_as_intlist, sort_hand = True, sort_high_to_low = False, join = True):
     if sort_hand:
         cards_as_intlist.sort()
-        if 2 in cards_as_intlist and 3 in cards_as_intlist and 4 in cards_as_intlist and 5 in cards_as_intlist and 14 in cards_as_intlist:
+        if all([2 in cards_as_intlist, 3 in cards_as_intlist, 4 in cards_as_intlist, 5 in cards_as_intlist, 14 in cards_as_intlist]):
             cards_as_intlist.pop()
             cards_as_intlist.append(1)
             cards_as_intlist.sort()
@@ -127,7 +137,7 @@ print(newlist)
 print(len(newlist))
 
 # print(return_hand_as_integers('2345A'))
-print(return_hand_as_string([2,11,4,5,10]))
+print(return_hand_as_string([2,11,4,5,10])) #this is for debug
 # newlist = remove_duplicate_hands(newlist)
 #
 # print(newlist)

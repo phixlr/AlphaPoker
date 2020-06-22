@@ -23,16 +23,119 @@ straight_flushes_by_value=[]
 
 hand = ['0','0','0','0','0']
 
+class Deck(list):
+    '''class to create a deck of cards with jokers (default = 0), and customisable number of ranks and suits
+    NOTE THAT ANY CUSTOM SUITS or RANKS MUST HAVE DIFFERENT STARTING LETTERS AS THEY ARE ABBREVIATED FOR THE PACK'''
+    def __init__(self, ranks=['2','3','4','5','6','7','8','9','T','Jack','Queen','King','Ace'], suits=['hearts','diamonds','clubs','spades'], jokers=0 ):
+        for s in suits:
+            if not isinstance(s,str):
+                print("specified suits must all be strings (and words only!")
+                self.suits = 'suits not initialized'
+                self.full_deck = 'Deck can\'t be initialized because there are no valid suits!'
+                return
+            else:
+                try:
+                    if int(s):
+                        print("specified suits must all be WORDS (not solely a numeric)")
+                        self.suits = 'suits not initialized'
+                        self.full_deck = 'Deck can\'t be initialized because there are no valid suits!'
+                        return
+                except: continue
+
+        self.ranks = ranks
+        self.suits = suits
+        self.jokers = jokers
+        self.full_deck = []
+
+        suitindex = 1
+        rankindex = 1
+        poppedsuits = suits.copy()
+        poppedranks = ranks.copy() #TODO - it’s for abbreviating ranks
+        for su in suits:
+            poppedsuits.remove(su)
+            su = su.lower()
+            for sa in poppedsuits:
+                sa = sa.lower()
+                for s in range(len(sa)):
+                    if sa[s] == su[s]:
+                        suitindex = s+2
+                    else:
+                        break
+
+        for s in suits:
+            if not isinstance(s,str):
+                s = str(s)
+            s = s.lower()
+            for r in ranks:
+                if not isinstance(r,str):
+                    r = str(r)
+                r = r.upper()
+                self.full_deck.append(r[0:rankindex]+s[0:suitindex])
+        if jokers>0:
+            for j in range(jokers):
+                self.full_deck.append('Joker')
+        # self.all_available_hands = all_possible_hands(self.full_deck, self.)
+
+    # @classmethod
+    # def __create_full_deck(cls, number_of_decks = 1):
+    #     for s in cls.suits:
+    #         if not isinstance(s,str):
+    #             s = str(s)
+    #         for r in cls.ranks:
+    #             if not isinstance(r,str):
+    #                 r = str(r)
+    #             cls.full_deck.append(r[0]+s[0])
+    #     if cls.jokers>0:
+    #         for j in range(cls.jokers):
+    #             cls.full_deck.append('Joker')
+    #
+    # # @classmethod
+    # def __add_rank_to_deck(self,rank):
+    #     self.ranks = self.ranks.append(rank)
+
+deck = Deck()
+print(deck.full_deck)
+print(len(deck.full_deck))
+# normal_deck.__create_full_deck()
+# print(normal_deck.full_deck)
+# print(len(normal_deck.full_deck))
+
+# my_deck = Deck([2,3,4,5,6,7,8,9,'T','Mabli','Philip','Carys','Lowri','Kate','Ace'],['hearts','diamonds','clubs','spades','twigs','snakes'])
+# print(my_deck.full_deck)
+# print(len(my_deck.full_deck))
+
+
+def all_possible_hands (deck_of_cards, cards_in_hand=5):
+    custom_dict = {}
+    new_dict = {}
+    for e, c in enumerate(deck_of_cards):
+        custom_dict[e] = c
+    cardlist = custom_dict.keys()
+    for i in range(0, cardlist):
+        for j in range(i, cardlist):
+            for k in range(j, cardlist):
+                for l in range(k, cardlist):
+                    for m in range(l, cardlist):
+                        hand = list(set[i, j, k, l, m].sort())
+                        if len(hand) < cards_in_hand: continue
+                        if hand not in new_dict.values():
+                            new_dict[count] = hand
+                            count += 1
+                        # if all the ranks are distinct then
+                        # count another hand with all suits equal
+                        # if d == 5: count += 1
+
+
 ranks_popped = ranks.copy()
+# #TODO:
+# class Hand (object):
+#     def __init__(self, players, hand_number, hole_cards=2):
+#         self.deck = random.shuffle(pack_of_cards)
+#         self.players = players
+#         self.hand_number = hand_number
+#         self.hole_cards = hole_cards
 
-class Hand (object):
-    def __init__(self, players, hand_number, hole_cards=2):
-        self.deck = random.shuffle(pack_of_cards)
-        self.players = players
-        self.hand_number = hand_number
-        self.hole_cards = hole_cards
 
-    classmethod
 
 
 def return_hand_as_integers(cards_as_string):

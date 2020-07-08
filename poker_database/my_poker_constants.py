@@ -63,12 +63,10 @@ class Deck(list):
                         break
 
         for s in suits:
-            if not isinstance(s,str):
-                s = str(s)
+            if not isinstance(s,str): s = str(s)
             s = s.lower()
             for r in ranks:
-                if not isinstance(r,str):
-                    r = str(r)
+                if not isinstance(r,str): r = str(r)
                 r = r.upper()
                 self.full_deck.append(r[0:rankindex]+s[0:suitindex])
         if jokers>0:
